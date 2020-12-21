@@ -41,19 +41,13 @@ degenerate_WT=merge(alba,trem)
 
 ######## DEFINE FUNCTIONS FOR SEARCHING ##############
 
-s2_table = {"A":"ARWMN",
-            "C":"CYSMN",
-            "T":"TYWKN",
-            "G":"GRSKN",
-            "R":"RN",
-            "Y":"YN",
-            "M":"MN",
-            "K":"KN",
-            "W":"WN",
-            "S":"SN"}
+s2_table = {"A":"ARWMN", "C":"CYSMN",
+            "T":"TYWKN", "G":"GRSKN",
+            "R":"RN", "Y":"YN", "M":"MN", # these allow degeneracy 
+            "K":"KN", "W":"WN", "S":"SN"} # in the query sequence
 
 def equiv_dict(q,dat):
-    #can 'q' be found in the degenerate nucleotides in s2_table
+    # can 'q' be found in the degenerate nucleotides in s2_table?
     return dat in s2_table[q]
 
 def downsample(q,dat):
@@ -62,7 +56,7 @@ def downsample(q,dat):
     for x in range(len(dat)):
         if equiv_dict(q,dat[x]):
             temp_possible.append(x)
-    return temp_possible #returns a list of positions
+    return temp_possible #returns a list of positions where first nucleotide matches.
 
 def search(query,data,loud=False):
     possible=downsample(query[0],data[:-len(query)+1])
