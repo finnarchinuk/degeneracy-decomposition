@@ -1,5 +1,6 @@
 ############## ALIGN KNOWN WT SEQUENCES ##########
 
+# These were from an in-silico reference.
 alba='ATGCCGATGCGCGAAATGTTGAGCAGCGAACATGGAAATGCCCTTGCGAGTGTACCAGTGCAGATGAGTCTCTAGCTCGA'
 trem='ATGCCGATGAGCGAAATGTTGAG   CGAACATGGAAATGCCCTTGCGAGAGTACCAGTCCAGATGAGTCTCTAGCTCGA'
 # SNPs         ^                                        ^        ^
@@ -86,21 +87,22 @@ def search(query,data,loud=False):
 
 
 ############### SELECT QUERY SEQUENCES ##############
+# The Query sequences need to be upstream and downstream of the gRNA cut site.
+# For this example, they need to avoid SNPs, but could be before or after the indel.
 
 #alba='ATGCCGATGCGCGAAATGTTGAGCAGCGAACATGGAAATGCCCTTGCGAGTGTACCAGTGCAGATGAGTCTCTAGCTCGA'
 #trem='ATGCCGATGAGCGAAATGTTGAG   CGAACATGGAAATGCCCTTGCGAGAGTACCAGTCCAGATGAGTCTCTAGCTCGA'
 # SNPs          ^                                        ^        ^
 # gRNA                              ACATGGAAATGCCCTTG
-# pre_grna                       CGAACA
-# post_grna                                                            TGAGTCTCTAGCTCGA
+# pre_gRNA                       CGAACA
+# post_gRNA                                                            TGAGTCTCTAGCTCGA
 
 
 
 ############## GET WT REFERENCE ############
 
-pre_grna='CGAACA'           # Query before gRNA cut site
-post_grna='TGAGTCTCTAGCTCGA' # Query after gRNA cut site
-# These were selected to avoid SNPs and to be far enough away from the cut site that they won't be affected.
+pre_grna='CGAACA'            # Query upstream of the gRNA cut site
+post_grna='TGAGTCTCTAGCTCGA' # Query downstream of the gRNA cut site
 
 # Find locations of these query sequences in the degenerate_WT sequence. (Ideally you'll get two instances each).
 pre_grna_locs=search(pre_grna,degenerate_WT)
@@ -118,7 +120,7 @@ print(WT_spacing) #Should be [35,35]
 
 ############ GET SAMPLE_1 SPACING ############
 
-# This is from sequencing an unknown read near the indel/gRNA
+# This is from sequencing a sample near the indel/gRNA
 simulated_indel='GCATGCCGATGMGCGAAATGTTGAGCRRMSAWSRWRRWRMYSYYSKYGAKMGWRYSWRYCMRKRYRRRTSWSTMKCTMGMTCGA'
 
 #Using the same Query sequences as above.
@@ -139,7 +141,7 @@ sample1_spacing.append(post_grna_locs[1]-pre_grna_locs[1])
 
 print('WT:',WT_spacing)
 print('S1:',sample1_spacing)
-# shows there is a +1/+2 insertion from the cas9 cut.
-# since both will induce a frameshift, this sample should be looked at more closely.
+# Shows there is a +1/+2 insertion caused by the Cas9 cut.
+# Since both will induce a frameshift, this sample should cloned out.
 
 
